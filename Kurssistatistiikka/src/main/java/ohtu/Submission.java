@@ -1,7 +1,25 @@
 package ohtu;
 
+import java.util.List;
+import java.util.ArrayList;
+
 public class Submission {
+    private String course;
     private int week;
+    private int hours;
+    private List<Integer> exercises = new ArrayList<Integer>();
+
+    public Submission(){
+
+    }
+
+    public void setCourse(String course) {
+        this.course = course;
+    }
+
+    public String getCourse() {
+        return course;
+    }
 
     public void setWeek(int week) {
         this.week = week;
@@ -11,9 +29,39 @@ public class Submission {
         return week;
     }
 
+    public void setExercises(List<Integer> exercises) {
+        this.exercises = exercises;
+    }
+
+    public List<Integer> getExercises() {
+        return exercises;
+    }
+
+    public void setHours(int hours) {
+        this.hours = hours;
+    }
+
+    public int getHours() {
+        return hours;
+    }
+
+    public int totalExercises() {
+        return this.exercises.stream().mapToInt(i -> i.intValue()).sum();
+    }
+
     @Override
     public String toString() {
-        return ""+week;
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.course);
+        sb.append(", viikko ");
+        sb.append(this.week);
+        sb.append(" tehtyjä tehtäviä yhteensä ");
+        sb.append(this.exercises.size());
+        sb.append(" aikaa kului ");
+        sb.append(this.hours);
+        sb.append(" tehdyt tehtävät: ");
+        sb.append(this.exercises.toString().substring(1, this.exercises.toString().length() - 1));
+        return sb.toString();
     }
     
 }
