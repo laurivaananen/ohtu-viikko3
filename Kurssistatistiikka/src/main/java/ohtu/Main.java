@@ -4,13 +4,15 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import org.apache.http.client.fluent.Request;
 import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 import java.util.stream.IntStream;;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        String studentNr = "3";
+        String studentNr = "88";
 
         if ( args.length > 0) {
             studentNr = args[0];
@@ -30,20 +32,38 @@ public class Main {
         Submission[] subs = mapper.fromJson(bodyText, Submission[].class);
         Course[] courses = mapper.fromJson(coursesBodyText, Course[].class);
 
-        System.out.println("opiskelijanumvero: " + studentNr + "\n");
-
-        for ( Submission submission : subs ) {
-            System.out.println(submission);
+        for (int x = 0; x < courses.length; x++) {
+            Course course = courses[x];
+            for (int y = 0; y < subs.length; y++) {
+                if ( subs[y].getCourse().equals(course.name )) {
+                    Submission sub = subs[y];
+                    int maxExercises = course.exercises.get(sub.getWeek());
+                    sub.setMaxExercises(maxExercises);
+                    course.setSubmission(sub);
+                }
+            }
         }
 
-        StringBuilder sb = new StringBuilder();
-        sb.append("\nyhteensä: ");
-        Stream<Submission> stream = Arrays.stream(subs);
-        sb.append(stream.mapToInt(x -> x.getExercises().size()).sum());
-        sb.append(" tehtävää ");
-        Stream<Submission> stream_2 = Arrays.stream(subs);
-        sb.append(stream_2.mapToInt(x -> x.getHours()).sum());
-        sb.append(" tuntia");
-        System.out.println(sb.toString());
+        System.out.println("opiskelijanumero: " + studentNr);
+
+        for ( Course course : courses ) {
+            if (course.getSubmissions().size() > 0) {
+                System.out.println("\n" + course + "\n");
+                for ( Submission submission : course.getSubmissions() ) {
+                    System.out.println(submission);
+                }
+            StringBuilder sb = new StringBuilder();
+            sb.append("\nyhteensä: ");
+            Stream<Submission> stream = course.getSubmissions().stream();
+            sb.append(stream.mapToInt(x -> x.getExercises().size()).sum());
+            sb.append(" tehtävää ");
+            Stream<Submission> stream_2 = course.getSubmissions().stream();
+            sb.append(stream_2.mapToInt(x -> x.getHours()).sum());
+            sb.append(" tuntia");
+            System.out.println(sb.toString());
+            }
+        }
+
+        
     }
 }

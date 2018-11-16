@@ -15,6 +15,7 @@ public class Course {
     public String fullName;
     public boolean miniproject;
     public List<Integer> exercises;
+    private List<Submission> submissions = new ArrayList<Submission>();
 
     public Course(){
 
@@ -24,9 +25,17 @@ public class Course {
         return this.exercises.stream().mapToInt(x -> x.intValue()).sum();
     }
 
+    public void setSubmission(Submission submission) {
+        this.submissions.add(submission);
+    }
+
+    public List<Submission> getSubmissions() {
+        return this.submissions;
+    }
+
     @Override
     public String toString() {
-        return "a";
+        return name + " " + term + " " + year;
     }
     
 }

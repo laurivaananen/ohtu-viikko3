@@ -8,6 +8,7 @@ public class Submission {
     private int week;
     private int hours;
     private List<Integer> exercises = new ArrayList<Integer>();
+    private int maxExercises;
 
     public Submission(){
 
@@ -49,14 +50,24 @@ public class Submission {
         return this.exercises.stream().mapToInt(i -> i.intValue()).sum();
     }
 
+    public void setMaxExercises(int maxExercises) {
+        this.maxExercises = maxExercises;
+    }
+    
+    public int getMaxExercises() {
+        return maxExercises;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(this.course);
-        sb.append(", viikko ");
+        sb.append("viikko ");
         sb.append(this.week);
+        sb.append(":\n");
         sb.append(" tehtyjä tehtäviä yhteensä ");
         sb.append(this.exercises.size());
+        sb.append("/");
+        sb.append(getMaxExercises());
         sb.append(" aikaa kului ");
         sb.append(this.hours);
         sb.append(" tehdyt tehtävät: ");
